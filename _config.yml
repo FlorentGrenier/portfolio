@@ -8,5 +8,5 @@ description: >
 
   Développeur logiciel & IA chez VAL Software.
 logo: /assets/img/profile.jpg
-show_downloads: false
+show_downloads: true
 theme: jekyll-theme-minimal
