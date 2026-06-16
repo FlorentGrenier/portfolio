@@ -1,3 +1,8 @@
+---
+layout: default
+title: Accueil
+---
+
 # Florent Grenier
 
 AI Engineer · Python · C# · NLP · RAG
