@@ -1,0 +1,216 @@
+---
+layout: default
+title: Florent Grenier
+---
+
+<style>
+  .hero {
+    margin-bottom: 2rem;
+  }
+
+  .subtitle {
+    font-size: 1.05rem;
+    color: #555;
+    margin-bottom: 1rem;
+  }
+
+  .lead {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1rem 0;
+  }
+
+  .pill {
+    display: inline-block;
+    padding: 0.25rem 0.65rem;
+    border-radius: 999px;
+    background: #eef4ff;
+    color: #1f4f82;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.2rem;
+  }
+
+  .button {
+    display: inline-block;
+    padding: 0.55rem 0.9rem;
+    border-radius: 8px;
+    background: #1f4f82;
+    color: white !important;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  .button.secondary {
+    background: #f2f4f8;
+    color: #1f2937 !important;
+  }
+
+  .section-title {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .project-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .project-card {
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 1rem;
+    background: #fff;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .project-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+  }
+
+  .project-card h3 {
+    margin-top: 0;
+    margin-bottom: 0.4rem;
+  }
+
+  .project-card p {
+    margin-bottom: 0.75rem;
+  }
+
+  .interest-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.75rem;
+  }
+
+  .interest-card {
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 0.8rem;
+    background: #fafafa;
+    font-size: 0.95rem;
+  }
+</style>
+
+<section class="hero">
+  <h1>Florent Grenier</h1>
+
+  <p class="subtitle">
+    AI Engineer · Python · C# · NLP · RAG · Computer Vision
+  </p>
+
+  <div class="pills">
+    <span class="pill">Python</span>
+    <span class="pill">FastAPI</span>
+    <span class="pill">C#</span>
+    <span class="pill">NLP</span>
+    <span class="pill">RAG</span>
+    <span class="pill">Qdrant</span>
+    <span class="pill">Computer Vision</span>
+  </div>
+
+  <p class="lead">
+    Développeur logiciel et IA spécialisé dans l’intégration de solutions d’intelligence artificielle en environnement métier.
+    Actuellement développeur logiciel & IA chez VAL Software, je conçois des solutions combinant intelligence artificielle,
+    traitement de données et architecture logicielle.
+  </p>
+
+  <div class="actions">
+    <a class="button" href="#">Télécharger mon CV</a>
+    <a class="button secondary" href="https://github.com/FlorentGrenier">GitHub</a>
+    <a class="button secondary" href="#">LinkedIn</a>
+  </div>
+</section>
+
+<h2 class="section-title">Projets</h2>
+
+<div class="project-grid">
+  <article class="project-card">
+    <h3>Chatbot documentaire RAG</h3>
+
+    <div class="pills">
+      <span class="pill">Python</span>
+      <span class="pill">FastAPI</span>
+      <span class="pill">Qdrant</span>
+      <span class="pill">Flowise</span>
+    </div>
+
+    <p>
+      Assistant documentaire basé sur la génération augmentée par récupération,
+      permettant la recherche sémantique dans une base documentaire métier.
+    </p>
+  </article>
+
+  <article class="project-card">
+    <h3>FacerAnonim</h3>
+
+    <div class="pills">
+      <span class="pill">Python</span>
+      <span class="pill">spaCy</span>
+      <span class="pill">NLP</span>
+      <span class="pill">RGPD</span>
+    </div>
+
+    <p>
+      Outil d’anonymisation contextuelle de documents utilisant la détection d’entités nommées
+      afin de protéger les données sensibles.
+    </p>
+  </article>
+
+  <article class="project-card">
+    <h3>Computer Vision & Keypoint Detection</h3>
+
+    <div class="pills">
+      <span class="pill">Roboflow</span>
+      <span class="pill">Python</span>
+      <span class="pill">Google Colab</span>
+      <span class="pill">Keypoints</span>
+    </div>
+
+    <p>
+      Constitution de jeux de données annotés et entraînement de modèles de vision par ordinateur
+      pour la détection de points clés.
+    </p>
+  </article>
+
+  <article class="project-card">
+    <h3>Extension SDK DJI Tello</h3>
+
+    <div class="pills">
+      <span class="pill">Python</span>
+      <span class="pill">UDP</span>
+      <span class="pill">Temps réel</span>
+    </div>
+
+    <p>
+      Développement d’un module de contrôle autonome et amélioration des communications temps réel
+      pour drone DJI Tello.
+    </p>
+  </article>
+</div>
+
+<h2 class="section-title">Explorations actuelles</h2>
+
+<div class="interest-grid">
+  <div class="interest-card">Graphes de connaissances pour RAG</div>
+  <div class="interest-card">World Models</div>
+  <div class="interest-card">Apprentissage auto-supervisé</div>
+  <div class="interest-card">Vision par ordinateur</div>
+  <div class="interest-card">Agents IA</div>
+  <div class="interest-card">Bio-inspiration en robotique</div>
+</div>
