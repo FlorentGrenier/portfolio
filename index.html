@@ -1,246 +1,535 @@
----
----
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Florent Grenier — Neural Portfolio Demo</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: rgba(15, 23, 42, 0.86);
+      --panel-soft: rgba(30, 41, 59, 0.72);
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #7dd3fc;
+      --accent-2: #a78bfa;
+      --border: rgba(148, 163, 184, 0.22);
+      --green: #86efac;
+    }
 
-<style>
-   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-  
-  body {
-    max-width: 980px;
-    margin: 0 auto;
-    padding: 48px 24px;
-  }
+    * {
+      box-sizing: border-box;
+    }
 
-  .site-header {
-    margin-bottom: 48px;
-  }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(125, 211, 252, 0.18), transparent 28rem),
+        radial-gradient(circle at bottom right, rgba(167, 139, 250, 0.18), transparent 26rem),
+        var(--bg);
+      overflow-x: hidden;
+    }
 
-  .hero {
-    max-width: 760px;
-  }
+    main {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 56px 0;
+    }
 
-  .project-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
-  }
-  
-  .hero {
-    margin-bottom: 2rem;
-  }
+    .hero {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 32px;
+      align-items: center;
+      margin-bottom: 40px;
+    }
 
-  .subtitle {
-    font-size: 1.05rem;
-    color: #555;
-    margin-bottom: 1rem;
-  }
+    .eyebrow {
+      color: var(--accent);
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.78rem;
+      margin-bottom: 14px;
+    }
 
-  .lead {
-    font-size: 1rem;
-    line-height: 1.6;
-  }
+    h1 {
+      font-size: clamp(2.4rem, 6vw, 4.9rem);
+      line-height: 0.94;
+      letter-spacing: -0.07em;
+      margin: 0 0 18px;
+    }
 
-  .pills {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin: 1rem 0;
-  }
+    .subtitle {
+      font-size: 1.15rem;
+      line-height: 1.7;
+      color: var(--muted);
+      max-width: 660px;
+      margin: 0;
+    }
 
-  .pill {
-    display: inline-block;
-    padding: 0.25rem 0.65rem;
-    border-radius: 999px;
-    background: #eef4ff;
-    color: #1f4f82;
-    font-size: 0.85rem;
-    font-weight: 600;
-  }
+    .pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 22px;
+    }
 
-  .actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    margin-top: 1.2rem;
-  }
+    .pill {
+      border: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.58);
+      color: #dbeafe;
+      padding: 7px 11px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.82rem;
+    }
 
-  .button {
-    display: inline-block;
-    padding: 0.55rem 0.9rem;
-    border-radius: 8px;
-    background: #1f4f82;
-    color: white !important;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 0.9rem;
-  }
+    .terminal {
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: var(--panel);
+      box-shadow: 0 20px 70px rgba(0, 0, 0, 0.35);
+      overflow: hidden;
+    }
 
-  .button.secondary {
-    background: #f2f4f8;
-    color: #1f2937 !important;
-  }
+    .terminal-bar {
+      display: flex;
+      gap: 7px;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(2, 6, 23, 0.35);
+    }
 
-  .section-title {
-    margin-top: 2rem;
-    margin-bottom: 1rem;
-  }
+    .dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: #f87171;
+    }
 
-  .project-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
+    .dot:nth-child(2) {
+      background: #fbbf24;
+    }
 
-  .project-card {
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    padding: 1rem;
-    background: #fff;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-  }
+    .dot:nth-child(3) {
+      background: #34d399;
+    }
 
-  .project-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
-  }
+    .terminal-body {
+      padding: 20px;
+      font-family: "SFMono-Regular", Consolas, monospace;
+      color: #c4b5fd;
+      line-height: 1.7;
+      min-height: 210px;
+    }
 
-  .project-card h3 {
-    margin-top: 0;
-    margin-bottom: 0.4rem;
-  }
+    .terminal-body span {
+      color: var(--green);
+    }
 
-  .project-card p {
-    margin-bottom: 0.75rem;
-  }
+    .network-section {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 24px;
+      align-items: stretch;
+    }
 
-  .interest-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 0.75rem;
-  }
+    .network-card,
+    .details-card {
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      background: var(--panel);
+      box-shadow: 0 20px 70px rgba(0, 0, 0, 0.25);
+      min-height: 520px;
+      position: relative;
+      overflow: hidden;
+    }
 
-  .interest-card {
-    border: 1px solid #e5e7eb;
-    border-radius: 10px;
-    padding: 0.8rem;
-    background: #fafafa;
-    font-size: 0.95rem;
-  }
-</style>
+    .network-card {
+      padding: 24px;
+    }
 
-<section class="hero">
-  <h1>Florent Grenier</h1>
+    .section-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
 
-  <p class="subtitle">
-    AI Engineer · Python · C# · NLP · RAG · Computer Vision
-  </p>
+    h2 {
+      font-size: 1.45rem;
+      letter-spacing: -0.04em;
+      margin: 0;
+    }
 
-  <div class="pills">
-    <span class="pill">Python</span>
-    <span class="pill">FastAPI</span>
-    <span class="pill">C#</span>
-    <span class="pill">NLP</span>
-    <span class="pill">RAG</span>
-    <span class="pill">Qdrant</span>
-    <span class="pill">Computer Vision</span>
-  </div>
+    .hint {
+      font-size: 0.84rem;
+      color: var(--muted);
+    }
 
-  <p class="lead">
-    Développeur logiciel et IA spécialisé dans l’intégration de solutions d’intelligence artificielle en environnement métier.
-    Actuellement développeur logiciel & IA chez VAL Software, je conçois des solutions combinant intelligence artificielle,
-    traitement de données et architecture logicielle.
-  </p>
+    .network {
+      position: relative;
+      height: 430px;
+      margin-top: 16px;
+    }
 
-  <div class="actions">
-    <a class="button" href="/portfolio/assets/cv-florent-grenier.pdf">Télécharger mon CV</a>
-    <a class="button secondary" href="https://www.linkedin.com/in/florent-grenier-03a83117ab/">LinkedIn</a>
-  </div>
-</section>
+    svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
 
-<h2 class="section-title">Spécialisations</h2>
+    line {
+      stroke: rgba(125, 211, 252, 0.28);
+      stroke-width: 2;
+    }
 
-<h2 class="section-title">Projets</h2>
+    .node {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      width: 112px;
+      min-height: 112px;
+      border-radius: 24px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 12px;
+      cursor: pointer;
+      border: 1px solid rgba(125, 211, 252, 0.32);
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.96), rgba(30, 41, 59, 0.88));
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.24);
+      transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+      user-select: none;
+    }
 
-<div class="project-grid">
-  <article class="project-card">
-    <h3>Chatbot documentaire RAG</h3>
+    .node:hover,
+    .node.active {
+      transform: translate(-50%, -50%) scale(1.06);
+      border-color: var(--accent);
+      box-shadow: 0 18px 50px rgba(125, 211, 252, 0.16);
+    }
 
-    <div class="pills">
-      <span class="pill">Python</span>
-      <span class="pill">FastAPI</span>
-      <span class="pill">Qdrant</span>
-      <span class="pill">Flowise</span>
-    </div>
+    .node-core {
+      width: 136px;
+      min-height: 136px;
+      border-radius: 34px;
+      border-color: rgba(167, 139, 250, 0.65);
+      background: linear-gradient(145deg, rgba(88, 28, 135, 0.52), rgba(15, 23, 42, 0.96));
+    }
 
-    <p>
-      Assistant documentaire basé sur la génération augmentée par récupération,
-      permettant la recherche sémantique dans une base documentaire métier.
-       
-      Problème
-      Les utilisateurs perdent du temps à chercher dans une documentation métier dense.
+    .node-icon {
+      display: block;
+      font-size: 1.55rem;
+      margin-bottom: 6px;
+    }
 
-      Solution
-      Assistant documentaire combinant recherche sémantique, vector store et génération augmentée.
+    .node-label {
+      font-weight: 800;
+      font-size: 0.86rem;
+      color: #f8fafc;
+    }
 
-      Ce que ça démontre
-      Capacité à intégrer un système IA dans un environnement logiciel existant.
-    </p>
-  </article>
+    .details-card {
+      padding: 26px;
+    }
 
-  <article class="project-card">
-    <h3>FacerAnonim</h3>
+    .details-card h3 {
+      font-size: 1.7rem;
+      letter-spacing: -0.05em;
+      margin: 0 0 12px;
+    }
 
-    <div class="pills">
-      <span class="pill">Python</span>
-      <span class="pill">spaCy</span>
-      <span class="pill">NLP</span>
-      <span class="pill">RGPD</span>
-    </div>
+    .details-card p {
+      color: var(--muted);
+      line-height: 1.7;
+      margin: 0 0 18px;
+    }
 
-    <p>
-      Outil d’anonymisation contextuelle de documents utilisant la détection d’entités nommées
-      afin de protéger les données sensibles.
-    </p>
-  </article>
+    .mini-title {
+      color: var(--accent);
+      font-weight: 800;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 24px 0 10px;
+    }
 
-  <article class="project-card">
-    <h3>Computer Vision & Keypoint Detection</h3>
+    .project-list {
+      display: grid;
+      gap: 10px;
+    }
 
-    <div class="pills">
-      <span class="pill">Roboflow</span>
-      <span class="pill">Python</span>
-      <span class="pill">Google Colab</span>
-      <span class="pill">Keypoints</span>
-    </div>
+    .project-item {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 13px;
+      background: var(--panel-soft);
+    }
 
-    <p>
-      Constitution de jeux de données annotés et entraînement de modèles de vision par ordinateur
-      pour la détection de points clés.
-    </p>
-  </article>
+    .project-item strong {
+      display: block;
+      margin-bottom: 4px;
+    }
 
-  <article class="project-card">
-    <h3>Extension SDK DJI Tello</h3>
+    .project-item small {
+      color: var(--muted);
+      line-height: 1.5;
+    }
 
-    <div class="pills">
-      <span class="pill">Python</span>
-      <span class="pill">UDP</span>
-      <span class="pill">Temps réel</span>
-    </div>
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 28px;
+    }
 
-    <p>
-      Développement d’un module de contrôle autonome et amélioration des communications temps réel
-      pour drone DJI Tello.
-    </p>
-  </article>
-</div>
+    a.button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 14px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 800;
+      color: #020617;
+      background: var(--accent);
+    }
 
-<h2 class="section-title">Explorations actuelles</h2>
+    a.button.secondary {
+      color: var(--text);
+      background: rgba(148, 163, 184, 0.16);
+      border: 1px solid var(--border);
+    }
 
-<div class="interest-grid">
-  <div class="interest-card">Graphes de connaissances pour RAG</div>
-  <div class="interest-card">World Models</div>
-  <div class="interest-card">Apprentissage auto-supervisé</div>
-  <div class="interest-card">Vision par ordinateur</div>
-  <div class="interest-card">Agents IA</div>
-  <div class="interest-card">Bio-inspiration en robotique</div>
-</div>
+    @media (max-width: 880px) {
+      .hero,
+      .network-section {
+        grid-template-columns: 1fr;
+      }
+
+      .network {
+        height: 520px;
+      }
+
+      .node {
+        width: 100px;
+        min-height: 100px;
+      }
+
+      .node-core {
+        width: 125px;
+        min-height: 125px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero">
+      <div>
+        <div class="eyebrow">Neural portfolio · AI engineer</div>
+        <h1>Florent Grenier</h1>
+        <p class="subtitle">
+          Je transforme des idées IA en fonctionnalités métier : NLP, RAG, vision par ordinateur,
+          APIs et architecture logicielle.
+        </p>
+
+        <div class="pills">
+          <span class="pill">Python</span>
+          <span class="pill">FastAPI</span>
+          <span class="pill">C#</span>
+          <span class="pill">NLP</span>
+          <span class="pill">RAG</span>
+          <span class="pill">Computer Vision</span>
+          <span class="pill">Qdrant</span>
+        </div>
+      </div>
+
+      <div class="terminal">
+        <div class="terminal-bar">
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+        </div>
+        <div class="terminal-body">
+          <div>&gt; ask FlorentGPT("profil")</div>
+          <div><span>output:</span> software + AI + data</div>
+          <div><span>focus:</span> industrialiser l'IA</div>
+          <div><span>domains:</span> NLP, RAG, vision, agents</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="network-section">
+      <div class="network-card">
+        <div class="section-title">
+          <h2>Carte neuronale</h2>
+          <span class="hint">Clique sur un nœud</span>
+        </div>
+
+        <div class="network" id="network">
+          <svg viewBox="0 0 700 430" preserveAspectRatio="none">
+            <line x1="350" y1="215" x2="160" y2="95" />
+            <line x1="350" y1="215" x2="540" y2="95" />
+            <line x1="350" y1="215" x2="125" y2="300" />
+            <line x1="350" y1="215" x2="575" y2="300" />
+            <line x1="350" y1="215" x2="350" y2="365" />
+          </svg>
+
+          <button class="node node-core active" style="left: 50%; top: 50%;" data-key="core">
+            <span>
+              <span class="node-icon">🧠</span>
+              <span class="node-label">Florent</span>
+            </span>
+          </button>
+
+          <button class="node" style="left: 23%; top: 22%;" data-key="nlp">
+            <span>
+              <span class="node-icon">💬</span>
+              <span class="node-label">NLP</span>
+            </span>
+          </button>
+
+          <button class="node" style="left: 77%; top: 22%;" data-key="rag">
+            <span>
+              <span class="node-icon">📚</span>
+              <span class="node-label">RAG</span>
+            </span>
+          </button>
+
+          <button class="node" style="left: 18%; top: 70%;" data-key="vision">
+            <span>
+              <span class="node-icon">👁️</span>
+              <span class="node-label">Vision</span>
+            </span>
+          </button>
+
+          <button class="node" style="left: 82%; top: 70%;" data-key="backend">
+            <span>
+              <span class="node-icon">⚙️</span>
+              <span class="node-label">APIs</span>
+            </span>
+          </button>
+
+          <button class="node" style="left: 50%; top: 86%;" data-key="robotics">
+            <span>
+              <span class="node-icon">🚁</span>
+              <span class="node-label">Robotique</span>
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <aside class="details-card" id="details">
+        <!-- contenu injecté en JS -->
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    const data = {
+      core: {
+        title: "Profil central",
+        text: "Développeur logiciel & IA, je conçois des systèmes qui relient modèles, données, APIs et usages métier.",
+        stack: ["Python", "C#", "FastAPI", "SQL Server", "CI/CD"],
+        projects: [
+          ["IA métier", "Intégration de fonctionnalités IA dans des logiciels existants."],
+          ["Architecture", "Microservices, APIs REST, Clean Architecture et industrialisation."]
+        ]
+      },
+      nlp: {
+        title: "NLP & anonymisation",
+        text: "Extraction, classification, reformulation et anonymisation de textes pour des usages métier.",
+        stack: ["spaCy", "CamemBERT", "NER", "RGPD"],
+        projects: [
+          ["FacerAnonim", "Détection d'entités nommées et anonymisation contextuelle."],
+          ["Reformulation intelligente", "Aide à la rédaction et reformulation dans une interface métier."]
+        ]
+      },
+      rag: {
+        title: "RAG & recherche documentaire",
+        text: "Construction d'assistants documentaires basés sur la recherche sémantique et la génération augmentée.",
+        stack: ["Qdrant", "Flowise", "Embeddings", "FastAPI"],
+        projects: [
+          ["Chatbot documentaire", "Assistant RAG sur documentation métier."],
+          ["Recherche sémantique", "Indexation, vector store et exposition via API."]
+        ]
+      },
+      vision: {
+        title: "Computer Vision",
+        text: "Création de datasets annotés, extraction vidéo et entraînement de modèles de détection.",
+        stack: ["Roboflow", "Google Colab", "Python", "Keypoints"],
+        projects: [
+          ["Keypoint Detection", "Annotation de données et exploitation des points clés."],
+          ["Pipeline vidéo", "Extraction d'images depuis des vidéos pour constituer un dataset."]
+        ]
+      },
+      backend: {
+        title: "APIs & industrialisation",
+        text: "Transformer un prototype IA en service exploitable : APIs, microservices, tests, CI/CD.",
+        stack: ["FastAPI", "ASP.NET", "Docker", "Azure DevOps"],
+        projects: [
+          ["Microservices IA", "Exposition de briques IA via APIs REST."],
+          ["CI/CD", "Industrialisation des déploiements et intégration continue."]
+        ]
+      },
+      robotics: {
+        title: "Systèmes autonomes",
+        text: "Expérimentations autour du contrôle temps réel, de la robotique et des systèmes autonomes.",
+        stack: ["Python", "UDP", "Temps réel", "DJI Tello"],
+        projects: [
+          ["SDK DJI Tello", "Contrôle autonome et communication faible latence."],
+          ["Explorations", "World Models, bio-inspiration et navigation autonome."]
+        ]
+      }
+    };
+
+    const details = document.getElementById("details");
+    const nodes = document.querySelectorAll(".node");
+
+    function render(key) {
+      const item = data[key];
+
+      details.innerHTML = `
+        <h3>${item.title}</h3>
+        <p>${item.text}</p>
+
+        <div class="mini-title">Stack associée</div>
+        <div class="pills">
+          ${item.stack.map(s => `<span class="pill">${s}</span>`).join("")}
+        </div>
+
+        <div class="mini-title">Ce que ça démontre</div>
+        <div class="project-list">
+          ${item.projects.map(p => `
+            <div class="project-item">
+              <strong>${p[0]}</strong>
+              <small>${p[1]}</small>
+            </div>
+          `).join("")}
+        </div>
+
+        <div class="actions">
+          <a class="button" href="#">Voir le CV</a>
+          <a class="button secondary" href="https://github.com/FlorentGrenier">GitHub</a>
+        </div>
+      `;
+
+      nodes.forEach(n => n.classList.toggle("active", n.dataset.key === key));
+    }
+
+    nodes.forEach(node => {
+      node.addEventListener("click", () => render(node.dataset.key));
+    });
+
+    render("core");
+  </script>
+</body>
+</html>
